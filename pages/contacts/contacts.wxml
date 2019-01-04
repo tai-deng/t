@@ -1,0 +1,32 @@
+<!--pages/contacts/contacts.wxml-->
+<view class="container">
+    <view class="logo row">
+        <view class="logo-warp">
+            <image src="../imgs/chat/logo.png"></image>
+        </view>
+    </view>
+    <view class="menu">
+        <!-- <block wx:if="{{!menuShow}}">
+        <view class="menu-add" catchtap="onMenu">
+            <image src="../imgs/chat/add.png"></image>
+        </view>
+        </block>
+        <block wx:else> -->
+        <view class="menu-show">
+            <view wx:if="{{type}}" class="menu-show-item tp row" catchtap="onRouter"data-r="mute">
+            <image src="../imgs/chat/flock.png"></image>
+            扎堆会　
+            </view>
+            <button open-type="share" hover-class="none" class="menu-show-item row">
+            <image src="../imgs/chat/addfrend.png"></image>
+            邀请好友
+            </button>
+            <button open-type="contant" hover-class="none" class="menu-show-item row">
+            <image src="../imgs/chat/advice.png"></image>
+            投诉建议
+            </button>
+        </view>
+        <!-- </block> -->
+
+    </view>
+</view>

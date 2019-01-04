@@ -1,0 +1,84 @@
+<!--index.wxml-->
+
+<form bindsubmit="form" report-submit='true' >
+<view class="container">
+  <view class="accredit-bar column" wx:if="{{!hasUserInfo && canIUse}}">
+    <view class="userinfo column">
+      <view class="userinfo-title">提示</view>
+      <view class="userinfo-cnt">为了更友好的为您服务请授权您的基本信息</view>
+      <view class="userinfo-bnt row">
+        <button open-type="submit" class="row" catchtap="onCancel" hover-class="none">取消</button>
+        <button open-type="getUserInfo" class="row" bindgetuserinfo="getUserInfoInit" hover-class="none">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="tm"></view>
+  <view class="topBar rows">
+    <view class="topBar-l flexrow">
+      <view class="topBar-l-input">
+        <input type="text" bindinput='onSearchV' name='search'/>
+      </view>
+      <button hover-class="none" form-type="submit" class='topBar-l-btn'>
+        <image src="../imgs/chat/search.png"></image>
+      </button>
+    </view>
+    <block wx:if="{{searchSta}}">
+      <view class="search-cnt">
+        <button form-type="submit" hover-class="none" class="chat-item rows"bindtap="onChat"wx:for="{{dataa}}"wx:key="{{index}}"data-id="{{item.id}}"data-title="{{item.title}}">
+          <view class="chat-item-l flexrow">
+            <view class="chat-item-l-pic">
+              <image src="{{item.pic}}" />
+            </view>
+            <view class="chat-item-l-info column">
+              <view class="chat-item-l-name">{{item.title}}</view>
+              <view class="chat-item-l-cnt">{{item.cont}}</view>
+            </view>
+          </view>
+          <view class="chat-item-r column">
+            <view class="chat-item-r-time">{{item.time}}</view>
+            <view class="chat-item-r-state">
+              <image wx:if="{{mute}}" src="../imgs/ltb.png"/>
+            </view>
+          </view>
+        </button>
+      </view>
+    </block>
+  </view>
+
+  <view class="chat-content">
+      <view class="tab flexrow">
+          <view class="tab-item row"bindtap='onTab'data-i='1'>
+              <view class="tab-item-v row {{tab==1?'se':''}}">
+                  通讯录
+              </view>
+          </view>
+          <view class="tab-item row"bindtap='onTab'data-i='2'>
+              <view class="tab-item-v row {{tab==2?'se':''}}">
+                  扎堆会
+              </view>
+          </view>
+      </view>
+
+    <button form-type="submit" catchlongpress='onLongpress' hover-class="none" class="chat-item rows"bindtap="onChat"data-title="{{item.title}}"wx:for="{{data}}"wx:key="{{index}}"data-id="{{item.id}}"data-i="{{index}}">
+      <view class="chat-item-l flexrow">
+        <view class="chat-item-l-pic">
+          <image src="{{item.pic}}" />
+        </view>
+        <view class="chat-item-l-info column">
+          <view class="chat-item-l-name">{{item.title}}</view>
+          <view class="chat-item-l-cnt">{{item.cont}}</view>
+        </view>
+      </view>
+      <view class="chat-item-r column">
+        <view class="chat-item-r-time">{{item.time}}</view>
+        <view class="chat-item-r-state">
+          <image wx:if="{{mute}}" src="../imgs/ltb.png"/>
+        </view>
+      </view>
+    </button>
+
+  </view>
+
+</view>
+</form>

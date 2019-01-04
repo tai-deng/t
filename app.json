@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/index/chat/chat",
+    "pages/logs/logs",
+    "pages/contacts/contacts",
+    "pages/index/group/group",
+    "pages/market/market"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2c2c2c",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "selectedColor": "#ff5800",
+    "color": "#cccccc",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "扎堆",
+        "iconPath": "pages/imgs/lta.png",
+        "selectedIconPath": "pages/imgs/ltb.png"
+      },
+      {
+        "pagePath": "pages/contacts/contacts",
+        "text": "管理",
+        "iconPath": "pages/imgs/lxra.png",
+        "selectedIconPath": "pages/imgs/lxrb.png"
+      }
+    ]
+  },
+  "resizable": true
+}
