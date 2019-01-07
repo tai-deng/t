@@ -11,7 +11,7 @@ Page({
     hasUserInfo: false,
     type:true,
     tab:1,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    // canIUse: wx.canIUse('button.open-type.getUserInfo'),
     data1:[
       {pic:'../imgs/chat/image.png',title:'鸡蛋供应',cont:'将持续更新该品类的最新价格，敬请关注！',time:util.nowDate(),id:1},
       {pic:'../imgs/chat/image.png',title:'牛肉供应',cont:'将持续更新该品类的最新价格，敬请关注！',time:util.nowDate(),id:2},
@@ -33,35 +33,40 @@ Page({
     // this.getUserInfoInit();
     let data = this.data.data1;
     this.setData({data})
-    this.init()
+    this.init(op)
   },
   // 用户登录
-  init(){
+  init(op){
     let code = cache.get('code');     // code
     let scene = cache.get('scene')    // 场景
     let inviter = 0;                  // 邀请人
     let roomid = 0;                 // 聊天室
+    if (op['inviter'] && op['roomid']) {
+      inviter = op.inviter;
+      roomid = op.roomid;
+    }
+    this.setData({roomid,inviter})
     network.post('login.do',{
       code,
       scene,
       inviter,
       roomid,
     }).then((res)=>{
-      if(res.code == '0'){
-        this.reg(res.data.bind_id)
+      if (res.code == '0' && res.data.bind_id) {
+        this.setData({bind_id:res.data.bind_id})
+      } else {
+        cache.set('token', res.data.token);
+        let user = cache.get('userInfo');
+        user['userInfo'] = res.data.user;
+        cache.set('userInfo',user)
       }
     })
   },
   // 用户注册
-  reg(bind_id){
-    let raw_data= 0;
-    let signature= 0;
-    let encrypted_data= 0;
-    let iv= 0;
+  reg(bind_id,raw_data,signature,encrypted_data,iv){
     let scene= cache.get('scene'); // 场景
-    bind_id;           // 登录接口返回绑定 id
-    let inviter= 0;           // 邀请人 id
-    let roomid= 0;            // 聊天室 id
+    let inviter= this.data.inviter;// 邀请人 id
+    let roomid= this.data.roomid;  // 聊天室 id
     network.post('reg.do',{
       raw_data,
       signature,
@@ -72,7 +77,12 @@ Page({
       inviter,
       roomid,
     }).then((res)=>{
-      console.log(res)
+      if (res.code == '0') {
+        cache.set('token', res.data.token);
+        let user = cache.get('userInfo');
+        user.userInfo = res.data.user;
+        cache.set('userInfo',user)
+      }
     })
   },
   // tab 菜单切换
@@ -156,13 +166,22 @@ Page({
     }
   },
   // 获取用户信息
-  getUserInfo: function(e) {
-    cache.set('userInfo', e.detail.userInfo);
-    console.log(e)
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
+  getUserInfo: function (e) {
+    if (e.errMsg = 'getUserInfo:ok') {
+      if (this.data.bind_id) {
+        cache.set('userInfo', e.detail);
+        this.reg(this.data.bind_id,
+          e.detail.rawData,
+          e.detail.signature,
+          e.detail.encryptedData,
+          e.detail.iv
+        )
+      }
+      this.setData({
+        userInfo: e.detail.userInfo,
+        hasUserInfo: true
+      })
+    }
   },
   // 会话设置
   onLongpress(e) {
